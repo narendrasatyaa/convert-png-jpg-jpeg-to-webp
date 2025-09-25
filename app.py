@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image, ImageOps
-import fitz  # PyMuPDF
+import fitz  # dari PyMuPDF
 import io
 
 st.set_page_config(page_title="Image/PDF to WebP Converter", page_icon="🖼️")
