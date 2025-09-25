@@ -81,6 +81,7 @@ Didesain agar mudah digunakan: cukup unggah file → lihat pratinjau → unduh h
 streamlit>=1.25.0
 pillow>=10.0.0
 pdf2image>=1.17.0
+PyMuPDF
 ```
 
 ⚠️ Catatan:
