@@ -1,13 +1,12 @@
 import streamlit as st
 from PIL import Image, ImageOps
-from pdf2image import convert_from_path
+import fitz  # PyMuPDF
 import io
 
 st.set_page_config(page_title="Image/PDF to WebP Converter", page_icon="🖼️")
 
 st.title("🖼️ Convert JPG/PNG/PDF ke WebP (Multiple Files)")
 
-# Bisa upload banyak file sekaligus
 uploaded_files = st.file_uploader(
     "Upload file (bisa lebih dari 1)",
     type=["jpg", "jpeg", "png", "pdf"],
@@ -37,9 +36,11 @@ if uploaded_files:
 
         elif filename.lower().endswith(".pdf"):
             try:
-                images = convert_from_path(uploaded_file, dpi=200)
-                for i, img in enumerate(images, start=1):
-                    img = img.convert("RGB")
+                pdf_document = fitz.open(stream=uploaded_file.read(), filetype="pdf")
+                for i, page in enumerate(pdf_document, start=1):
+                    pix = page.get_pixmap(dpi=200)
+                    img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+
                     buf = io.BytesIO()
                     img.save(buf, "WEBP", quality=80)
                     byte_im = buf.getvalue()
